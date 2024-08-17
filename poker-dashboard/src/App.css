@@ -1,0 +1,76 @@
+/* Existing styles */
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: #252525; /* Maintains the dark background */
+}
+
+.main {
+  background-color: inherit; /* Inherits the background color from the body */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: row; /* Ensure sidebar and content are aligned horizontally */
+}
+
+/* New styles to handle layout */
+.app-container {
+  display: flex;
+  width: 100%;
+}
+
+.sidebar-container {
+  width: 250px; /* Ensure this matches your sidebar's width */
+  flex-shrink: 0; /* Prevents the sidebar from shrinking */
+}
+
+.content-container {
+  flex: 1; /* Takes up remaining space next to the sidebar */
+  padding: 20px;
+  background-color: #353535; /* Slightly lighter than the body for contrast */
+  overflow-y: auto; /* Allows content to scroll if necessary */
+  color: #ffffff; /* Ensures text is visible on the dark background */
+}
+
+.content-container h1 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #61dafb; /* Accent color for headings */
+}
+
+/* Additional content styling if needed */
+.content-container .content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
