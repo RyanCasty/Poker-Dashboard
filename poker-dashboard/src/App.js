@@ -4,10 +4,11 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/common/sidebar/sidebar';
 import Home from './components/pages/home/Home';
 import AddGameEntry from './components/pages/AddGame/AddGame';
+import PreviousGame from './components/pages/PreviousGame/PreviousGame'; // Import the PreviousGame component
 import './App.css';
 
 function App() {
-  const userId = 'userIdFromAuthentication';
+  const userId = 'Ryan Castellarin';
 
   return (
     <Router>
@@ -18,8 +19,9 @@ function App() {
           </div>
           <div className="content-container">
             <Routes>
-              <Route path="/home" element={<Home />} />
+              <Route path="/home" element={<Home userId={userId} />} />
               <Route path="/add-game" element={<AddGameEntry userId={userId} />} />
+              <Route path="/previous-games" element={<PreviousGame userId={userId} />} />
             </Routes>
           </div>
         </div>

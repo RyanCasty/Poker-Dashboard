@@ -1,7 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const cors = require('cors'); // Import the cors package
+const cors = require('cors');
 
 // Load environment variables
 dotenv.config();
@@ -13,13 +13,10 @@ const PORT = process.env.PORT || 5001;
 app.use(express.json());
 
 // Enable CORS for all origins
-app.use(cors()); // This enables CORS for all routes and origins
-
-// Optionally, restrict CORS to specific origins
 app.use(cors({
     origin: 'http://localhost:3000', // Allow only this origin
-    methods: 'GET,POST', // Allow specific methods
-    credentials: true, // Allow credentials if needed
+    methods: 'GET,POST',
+    credentials: true,
 }));
 
 // Connect to MongoDB
@@ -33,6 +30,9 @@ const gameEntrySchema = new mongoose.Schema({
     buyIn: { type: Number, required: true },
     cashOut: { type: Number, required: true },
     date: { type: Date, required: true },
+    location: { type: String }, // Added additional fields if they exist in your model
+    gameType: { type: String },
+    notes: { type: String },
 });
 
 const GameEntry = mongoose.model('GameEntry', gameEntrySchema);
@@ -45,15 +45,27 @@ app.get('/', (req, res) => {
 // POST route to add a game entry
 app.post('/api/games/add', async (req, res) => {
     try {
-        const { user, buyIn, cashOut, date } = req.body;
+        const { user, buyIn, cashOut, date, location, gameType, notes } = req.body;
 
         // Create and save the new game entry
-        const newGame = new GameEntry({ user, buyIn, cashOut, date });
+        const newGame = new GameEntry({ user, buyIn, cashOut, date, location, gameType, notes });
         await newGame.save();
 
         res.status(201).json(newGame);
     } catch (error) {
         res.status(500).json({ message: 'Error adding game entry', error });
+    }
+});
+
+// GET route to fetch all games for a specific user
+app.get('/api/games', async (req, res) => {
+    const { userId } = req.query;
+
+    try {
+        const games = await GameEntry.find({ user: userId });
+        res.status(200).json(games);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching games', error });
     }
 });
 

@@ -48,13 +48,13 @@ html, body {
 }
 
 .sidebar-container {
-  width: 250px; /* Ensure this matches your sidebar's width */
+  width: 200px; /* Ensure this matches your sidebar's width */
   flex-shrink: 0; /* Prevents the sidebar from shrinking */
 }
 
 .content-container {
   flex: 1; /* Takes up remaining space next to the sidebar */
-  padding: 20px;
+  padding: 40px;
   background-color: #353535; /* Slightly lighter than the body for contrast */
   overflow-y: auto; /* Allows content to scroll if necessary */
   color: #ffffff; /* Ensures text is visible on the dark background */

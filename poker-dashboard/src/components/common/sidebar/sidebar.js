@@ -28,7 +28,11 @@ function Sidebar() {
                             Add Game
                         </NavLink>
                     </li>
-                    {/* You can add more nav items here */}
+                    <li className="nav-item">
+                        <NavLink to="/previous-games" className={({ isActive }) => isActive ? "active nav-link" : "nav-link"}>
+                            Previous Games
+                        </NavLink>
+                    </li>
                 </ul>
             </nav>
         </aside>
