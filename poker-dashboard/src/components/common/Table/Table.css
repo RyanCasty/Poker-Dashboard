@@ -1,0 +1,63 @@
+/* File: src/common/Table/Table.css */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+  
+  th, td {
+    padding: 12px 15px;
+    text-align: left;
+  }
+  
+  /* Header styling */
+  th {
+    background-color: #2C3E50; /* Dark background for header */
+    color: #0aa4ca; /* Light grey text color */
+    font-weight: bold;
+    border-bottom: 2px solid #E67E22; /* Orange border */
+  }
+  
+  /* Red border below the header */
+  thead th {
+    border-bottom: 3px solid #E67E22; /* Orange border under header */
+  }
+  
+  /* Row styling */
+  tr {
+    background-color: #34495E; /* Dark background for rows */
+    color: #ECF0F1; /* Light grey text color */
+    border-bottom: 1px solid #E67E22; /* Orange border between rows */
+  }
+  
+  /* Cell styling */
+  td {
+    color: #ECF0F1; /* Light grey text color */
+    border-bottom: 1px solid #E67E22; /* Orange border between cells */
+  }
+  
+  /* Hover effect */
+  tr:hover {
+    background-color: #2C3E50; /* Slightly darker background on hover */
+  }
+  
+  /* Specific styling for Net Earnings column */
+  td:last-child {
+    font-weight: bold;
+    color: #2ECC71; /* Green for positive values */
+  }
+  
+  /* Red color for negative Net Earnings */
+  td:last-child:contains('-') {
+    color: #E74C3C; /* Red for negative values */
+  }
+  
+  .total-earnings, .average-stats, .biggest-stats, .last-games {
+    margin-bottom: 20px;
+  }
+  
+  h2, h3 {
+    color: #ECF0F1; /* Light grey text color */
+  }
+  

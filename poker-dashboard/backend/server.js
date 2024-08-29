@@ -12,12 +12,15 @@ const PORT = process.env.PORT || 5001;
 // Middleware to parse JSON
 app.use(express.json());
 
-// Enable CORS for all origins
+// Enable CORS for all origins and methods
 app.use(cors({
     origin: 'http://localhost:3000', // Allow only this origin
-    methods: 'GET,POST',
+    methods: ['GET', 'POST', 'DELETE', 'OPTIONS'], // Ensure DELETE and OPTIONS are included
     credentials: true,
 }));
+
+// Handle preflight requests (OPTIONS)
+app.options('*', cors());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -30,7 +33,7 @@ const gameEntrySchema = new mongoose.Schema({
     buyIn: { type: Number, required: true },
     cashOut: { type: Number, required: true },
     date: { type: Date, required: true },
-    location: { type: String }, // Added additional fields if they exist in your model
+    location: { type: String },
     gameType: { type: String },
     notes: { type: String },
 });
@@ -47,7 +50,6 @@ app.post('/api/games/add', async (req, res) => {
     try {
         const { user, buyIn, cashOut, date, location, gameType, notes } = req.body;
 
-        // Create and save the new game entry
         const newGame = new GameEntry({ user, buyIn, cashOut, date, location, gameType, notes });
         await newGame.save();
 
@@ -66,6 +68,23 @@ app.get('/api/games', async (req, res) => {
         res.status(200).json(games);
     } catch (error) {
         res.status(500).json({ message: 'Error fetching games', error });
+    }
+});
+
+// DELETE route to remove a game entry by ID
+app.delete('/api/games/delete/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const deletedGame = await GameEntry.findByIdAndDelete(id);
+
+        if (!deletedGame) {
+            return res.status(404).json({ message: 'Game entry not found' });
+        }
+
+        res.status(200).json({ message: 'Game entry deleted successfully', deletedGame });
+    } catch (error) {
+        res.status(500).json({ message: 'Error deleting game entry', error });
     }
 });
 

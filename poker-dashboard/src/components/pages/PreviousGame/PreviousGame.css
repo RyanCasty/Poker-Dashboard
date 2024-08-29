@@ -1,0 +1,30 @@
+/* PreviousGame.css */
+
+.games-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+  }
+  
+  .games-table th {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    padding: 12px;
+  }
+  
+  .games-table tr {
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .games-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+  }
+  
+  .error {
+    color: red;
+    font-weight: bold;
+  }
+  
