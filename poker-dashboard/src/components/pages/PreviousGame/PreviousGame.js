@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Table from '../../common/Table/Table';
 
 const PreviousGame = ({ userId }) => {
   const [games, setGames] = useState([]);
@@ -46,7 +47,61 @@ const PreviousGame = ({ userId }) => {
       setError('Failed to delete selected games');
     }
   };
-  
+
+  // Define the columns for the MyTable component
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Select',
+        accessor: 'select',
+        Cell: ({ row }) => (
+          <input
+            type="checkbox"
+            checked={selectedGames.includes(row.original._id)}
+            onChange={() => handleCheckboxChange(row.original._id)}
+          />
+        ),
+        id: 'select',
+        disableSortBy: true,
+      },
+      {
+        Header: 'Date',
+        accessor: 'date',
+        Cell: ({ value }) => new Date(value).toLocaleDateString(),
+      },
+      {
+        Header: 'Buy-In',
+        accessor: 'buyIn',
+        Cell: ({ value }) => `$${value.toFixed(2)}`,
+      },
+      {
+        Header: 'Cash-Out',
+        accessor: 'cashOut',
+        Cell: ({ value }) => `$${value.toFixed(2)}`,
+      },
+      {
+        Header: 'Net Profit',
+        accessor: 'netEarnings',
+        Cell: ({ row }) => {
+          const profit = row.original.cashOut - row.original.buyIn;
+          const formattedProfit = profit >= 0 ? `+$${profit.toFixed(2)}` : `-$${Math.abs(profit).toFixed(2)}`;
+          return <span>{formattedProfit}</span>;
+        },
+      },
+    ],
+    [selectedGames] // Recompute columns if selectedGames changes
+  );
+
+  // Transform games data to fit MyTable format
+  const data = React.useMemo(() => {
+    return games.map((game) => ({
+      _id: game._id,
+      date: game.date,
+      buyIn: game.buyIn,
+      cashOut: game.cashOut,
+      netEarnings: game.cashOut - game.buyIn,
+    }));
+  }, [games]);
 
   return (
     <div>
@@ -55,39 +110,8 @@ const PreviousGame = ({ userId }) => {
       <button onClick={handleDeleteGames} disabled={selectedGames.length === 0}>
         Delete Selected Games
       </button>
-      <table>
-        <thead>
-          <tr>
-            <th>Select</th>
-            <th>Date</th>
-            <th>Game Type</th>
-            <th>Buy-In ($)</th>
-            <th>Cash-Out ($)</th>
-            <th>Notes</th>
-            <th>Net Profit ($)</th>
-          </tr>
-        </thead>
-        <tbody>
-          {games.map((game) => (
-            <tr key={game._id}>
-              <td>
-                <input
-                  type="checkbox"
-                  checked={selectedGames.includes(game._id)}
-                  onChange={() => handleCheckboxChange(game._id)}
-                />
-              </td>
-              <td>{new Date(game.date).toLocaleDateString()}</td>
-              <td>{game.location}</td>
-              <td>{game.gameType}</td>
-              <td>{game.buyIn}</td>
-              <td>{game.cashOut}</td>
-              <td>{game.notes}</td>
-              <td>{game.cashOut - game.buyIn}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Pass columns and data to MyTable component */}
+      <Table columns={columns} data={data} />
     </div>
   );
 };

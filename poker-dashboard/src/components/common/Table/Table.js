@@ -1,12 +1,8 @@
-// File: src/components/MyTable.js
-
 import React from 'react';
 import { useTable } from 'react-table';
 import './Table.css';
 
-
 function MyTable({ columns, data }) {
-  // Use the useTable hook to create the table instance
   const {
     getTableProps,
     getTableBodyProps,
@@ -21,16 +17,7 @@ function MyTable({ columns, data }) {
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th
-                {...column.getHeaderProps()}
-                style={{
-                  borderBottom: 'solid 3px red',
-                  background: 'aliceblue',
-                  color: 'black',
-                  fontWeight: 'bold',
-                  padding: '10px',
-                }}
-              >
+              <th {...column.getHeaderProps()}>
                 {column.render('Header')}
               </th>
             ))}
@@ -42,18 +29,22 @@ function MyTable({ columns, data }) {
           prepareRow(row);
           return (
             <tr {...row.getRowProps()}>
-              {row.cells.map(cell => (
-                <td
-                  {...cell.getCellProps()}
-                  style={{
-                    padding: '10px',
-                    border: 'solid 1px gray',
-                    background: 'papayawhip',
-                  }}
-                >
-                  {cell.render('Cell')}
-                </td>
-              ))}
+              {row.cells.map(cell => {
+                const isNetProfit = cell.column.id === 'netEarnings'; // Ensure 'netProfit' is the correct accessor
+                const netProfitValue = parseFloat(cell.value);
+
+                return (
+                  <td
+                    {...cell.getCellProps()}
+                    className={isNetProfit ? 
+                      (netProfitValue > 0 ? 'net-profit-positive' : 'net-profit-negative') 
+                      : ''
+                    }
+                  >
+                    {cell.render('Cell')}
+                  </td>
+                );
+              })}
             </tr>
           );
         })}

@@ -88,7 +88,7 @@ function Dashboard({ userId }) {
     () => [
       {
         Header: 'Date',
-        accessor: 'date', // accessor is the "key" in the data
+        accessor: 'date',
       },
       {
         Header: 'Buy-In',
@@ -101,10 +101,16 @@ function Dashboard({ userId }) {
       {
         Header: 'Net Earnings',
         accessor: 'netEarnings',
+        Cell: ({ value }) => {
+          const formattedValue = value >= 0 ? `+$${value.toFixed(2)}` : `-$${Math.abs(value).toFixed(2)}`;
+          const style = { color: value >= 0 ? '#28a745' : '#dc3545', fontWeight: 'bold' };
+          return <span style={style}>{formattedValue}</span>;
+        },
       },
     ],
     []
   );
+  
 
   // Prepare the data for the table
   const tableData = React.useMemo(
@@ -113,10 +119,11 @@ function Dashboard({ userId }) {
         date: formatDate(game.date),
         buyIn: `$${game.buyIn.toFixed(2)}`,
         cashOut: `$${game.cashOut.toFixed(2)}`,
-        netEarnings: `$${(game.cashOut - game.buyIn).toFixed(2)}`,
+        netEarnings: game.cashOut - game.buyIn, // Keep it as a number
       })),
     [lastTenGames]
   );
+  
 
   return (
     <div className="dashboard-container">
@@ -135,7 +142,10 @@ function Dashboard({ userId }) {
         <h3>Biggest Win: ${biggestWin.toFixed(2)}</h3>
         <h3>Biggest Loss: ${biggestLoss.toFixed(2)}</h3>
       </div>
-
+      <div className="chart-container">
+      <h3>Earnings:</h3>
+        <AreaChart data={data} />
+      </div>
       <div className="last-games">
         <h3>Last 10 Games:</h3>
         {lastTenGames.length > 0 ? (
@@ -145,9 +155,7 @@ function Dashboard({ userId }) {
         )}
       </div>
 
-      <div className="chart-container">
-        <AreaChart data={data} />
-      </div>
+
     </div>
   );
 }

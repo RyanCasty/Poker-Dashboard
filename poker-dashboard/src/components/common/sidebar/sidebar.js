@@ -1,5 +1,3 @@
-// sidebar.js
-
 import React from 'react';
 import { NavLink } from "react-router-dom";
 import './sidebar.css';
@@ -7,11 +5,12 @@ import './sidebar.css';
 function Sidebar() {
     return (
         <aside className="sidebar">
-            <div className='logo'>
-                <img
-                    src='/img/poker-cards.png'
-                    alt='Poker Cards'
-                />
+            <div className="sidebar-user">
+                <span className="material-symbols-outlined user-icon">account_circle</span>
+                <div className="user-info">
+                    <h3>Ryan Castellarin</h3>
+                    <p>ryan.castellarin@gmail.com</p>
+                </div>
             </div>
             <div className="sidebar-header">
                 <h2>Poker Tracker</h2>

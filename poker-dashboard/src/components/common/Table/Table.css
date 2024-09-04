@@ -1,63 +1,88 @@
-/* File: src/common/Table/Table.css */
+/* Styling for positive net profit (green and bold) */
+.net-profit-positive {
+  font-weight: bold;
+  color: #28a745; /* Green */
+}
 
+/* Styling for negative net profit (red and bold) */
+.net-profit-negative {
+  font-weight: bold;
+  color: #dc3545; /* Red */
+}
+
+/* Base table styling */
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
-  
-  th, td {
-    padding: 12px 15px;
-    text-align: left;
-  }
-  
-  /* Header styling */
-  th {
-    background-color: #2C3E50; /* Dark background for header */
-    color: #0aa4ca; /* Light grey text color */
-    font-weight: bold;
-    border-bottom: 2px solid #E67E22; /* Orange border */
-  }
-  
-  /* Red border below the header */
-  thead th {
-    border-bottom: 3px solid #E67E22; /* Orange border under header */
-  }
-  
-  /* Row styling */
-  tr {
-    background-color: #34495E; /* Dark background for rows */
-    color: #ECF0F1; /* Light grey text color */
-    border-bottom: 1px solid #E67E22; /* Orange border between rows */
-  }
-  
-  /* Cell styling */
-  td {
-    color: #ECF0F1; /* Light grey text color */
-    border-bottom: 1px solid #E67E22; /* Orange border between cells */
-  }
-  
-  /* Hover effect */
-  tr:hover {
-    background-color: #2C3E50; /* Slightly darker background on hover */
-  }
-  
-  /* Specific styling for Net Earnings column */
-  td:last-child {
-    font-weight: bold;
-    color: #2ECC71; /* Green for positive values */
-  }
-  
-  /* Red color for negative Net Earnings */
-  td:last-child:contains('-') {
-    color: #E74C3C; /* Red for negative values */
-  }
-  
-  .total-earnings, .average-stats, .biggest-stats, .last-games {
-    margin-bottom: 20px;
-  }
-  
-  h2, h3 {
-    color: #ECF0F1; /* Light grey text color */
-  }
-  
+  width: 100%;
+  border-collapse: collapse; /* Ensure no gaps between header and body */
+  margin-top: 10px;
+  margin-bottom: 10px;
+  table-layout: fixed; /* Fix table layout for consistent column widths */
+}
+
+/* Header styling */
+th {
+  background-color: #101935;
+  color: #FFFFFF;
+  font-weight: bold;
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 2px solid #212C4D;
+  width: auto;
+}
+
+/* Row styling */
+tbody tr:nth-child(odd) {
+  background-color: #101935;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #13132B;
+}
+
+/* Ensure proper alignment between headers and body */
+tbody tr {
+  width: 100%;
+}
+
+/* Cell styling */
+td {
+  padding: 10px 20px; /* Ensure padding consistency */
+  color: #FFFFFF;
+  width: auto;
+}
+
+/* Remove borders between cells and rows */
+th, td {
+  border: none;
+}
+
+/* Hover effect on rows */
+tbody tr:hover {
+  background-color: #35364D;
+}
+
+/* Action icons styling */
+.action-icons {
+  font-size: 18px;
+  color: #ADB5BD;
+  cursor: pointer;
+}
+
+.action-icons:hover {
+  color: #6C63FF; /* Purple on hover */
+}
+
+/* Overall layout improvements */
+.table-container {
+  padding: 20px;
+  background-color: #1B1C2D;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Checkbox styling */
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #6C63FF;
+}
