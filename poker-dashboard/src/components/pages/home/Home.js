@@ -27,59 +27,61 @@ function Dashboard({ userId }) {
           params: { userId },
         });
         let gamesData = response.data;
-  
+
         gamesData.sort((a, b) => new Date(a.date) - new Date(b.date));
-  
+
         setGames(gamesData);
-  
+
         let cumulativeEarnings = 0;
         let totalWinnings = 0;
         let totalBuyIns = 0;
         let maxWin = Number.NEGATIVE_INFINITY;
         let maxLoss = Number.POSITIVE_INFINITY;
-  
+
         const chartData = gamesData.map((game) => {
           const netEarnings = game.cashOut - game.buyIn;
           cumulativeEarnings += netEarnings;
           totalWinnings += game.cashOut;
           totalBuyIns += game.buyIn;
-  
+
           if (netEarnings > maxWin) {
             maxWin = netEarnings;
           }
           if (netEarnings < maxLoss) {
             maxLoss = netEarnings;
           }
-  
+
           return {
             name: formatDate(game.date),
             uv: cumulativeEarnings,
           };
         });
-  
+
         setData(chartData);
         setBiggestWin(maxWin);
         setBiggestLoss(maxLoss);
-  
-        const total = gamesData.reduce((acc, game) => acc + (game.cashOut - game.buyIn), 0);
-  
+
+        const total = gamesData.reduce(
+          (acc, game) => acc + (game.cashOut - game.buyIn),
+          0
+        );
+
         setTotalEarnings(total);
-  
+
         const averageWinningsCalc = totalWinnings / gamesData.length;
         const averageBuyInsCalc = totalBuyIns / gamesData.length;
-  
+
         setAverageWinnings(averageWinningsCalc);
         setAverageBuyIns(averageBuyInsCalc);
-  
+
         const lastGames = gamesData.slice(-10);
         setLastTenGames(lastGames);
-  
       } catch (error) {
         console.error('Error fetching games:', error);
         setError(error.message);
       }
     };
-  
+
     fetchGames();
   }, [userId]);
 
@@ -102,15 +104,20 @@ function Dashboard({ userId }) {
         Header: 'Net Earnings',
         accessor: 'netEarnings',
         Cell: ({ value }) => {
-          const formattedValue = value >= 0 ? `+$${value.toFixed(2)}` : `-$${Math.abs(value).toFixed(2)}`;
-          const style = { color: value >= 0 ? '#28a745' : '#dc3545', fontWeight: 'bold' };
+          const formattedValue =
+            value >= 0
+              ? `+$${value.toFixed(2)}`
+              : `-$${Math.abs(value).toFixed(2)}`;
+          const style = {
+            color: value >= 0 ? '#28a745' : '#dc3545',
+            fontWeight: 'bold',
+          };
           return <span style={style}>{formattedValue}</span>;
         },
       },
     ],
     []
   );
-  
 
   // Prepare the data for the table
   const tableData = React.useMemo(
@@ -123,39 +130,51 @@ function Dashboard({ userId }) {
       })),
     [lastTenGames]
   );
-  
 
   return (
     <div className="dashboard-container">
       {error && <p className="error">Error: {error}</p>}
 
-      <div className="total-earnings">
-        <h2>Total Earnings: ${totalEarnings.toFixed(2)}</h2>
+      <div className="stats-container">
+        <div className="stat-card total-earnings">
+          <h3>Total Earnings</h3>
+          <p>${totalEarnings.toFixed(2)}</p>
+        </div>
+
+        <div className="stat-card">
+          <h3>Average Winnings</h3>
+          <p>${averageWinnings.toFixed(2)}</p>
+        </div>
+
+        <div className="stat-card">
+          <h3>Average Buy-Ins</h3>
+          <p>${averageBuyIns.toFixed(2)}</p>
+        </div>
+
+        <div className="stat-card">
+          <h3>Biggest Win</h3>
+          <p>${biggestWin.toFixed(2)}</p>
+        </div>
+
+        <div className="stat-card">
+          <h3>Biggest Loss</h3>
+          <p>${biggestLoss.toFixed(2)}</p>
+        </div>
       </div>
 
-      <div className="average-stats">
-        <h3>Average Winnings: ${averageWinnings.toFixed(2)}</h3>
-        <h3>Average Buy-Ins: ${averageBuyIns.toFixed(2)}</h3>
-      </div>
-
-      <div className="biggest-stats">
-        <h3>Biggest Win: ${biggestWin.toFixed(2)}</h3>
-        <h3>Biggest Loss: ${biggestLoss.toFixed(2)}</h3>
-      </div>
       <div className="chart-container">
-      <h3>Earnings:</h3>
+        <h3>Earnings Over Time</h3>
         <AreaChart data={data} />
       </div>
+
       <div className="last-games">
-        <h3>Last 10 Games:</h3>
+        <h3>Last 10 Games</h3>
         {lastTenGames.length > 0 ? (
           <Table columns={columns} data={tableData} />
         ) : (
           <p>No games available.</p>
         )}
       </div>
-
-
     </div>
   );
 }

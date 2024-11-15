@@ -1,0 +1,17 @@
+{
+  "name": "poker-dashboard",
+  "version": "1.0.0",
+  "description": "Poker Dashboard",
+  "main": "index.js",
+"scripts": {
+  "start": "concurrently \"npm run start-frontend\" \"npm run start-backend\"",
+  "start-frontend": "cd poker-dashboard && npm start",
+  "start-backend": "cd poker-dashboard/backend && node server.js"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}
